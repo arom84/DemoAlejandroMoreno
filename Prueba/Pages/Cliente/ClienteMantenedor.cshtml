@@ -1,0 +1,108 @@
+﻿@page
+@model Prueba.Pages.Cliente.ClienteMantenedorModel
+@{
+}
+
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="mdo">Cliente</button>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Agregar Cliente</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="post" asp-page-handler="Agregar">
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Nombre:</label>
+                        <input type="text" class="form-control" id="recipient-name" asp-for="objCliente.Nombre"><span asp-validation-for="objCliente.Nombre"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Pais:</label>
+                        <select asp-for="objCliente.Pais" class="form-control input" asp-items="@Model.ListaPaises">
+                            <option selected></option>
+                        </select> <span asp-validation-for="objCliente.Pais"></span>
+                        @*<input type="text" class="form-control" id="recipient-name" asp-for="objCliente.Pais"><span asp-validation-for="objCliente.Pais"></span>*@
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Tipo:</label>
+                        <input type="radio" class="form-control" id="recipient-name" asp-for="objCliente.Tipo" value="Individuo"> Individuo
+                        <input type="radio" class="form-control" id="recipient-name" asp-for="objCliente.Tipo" value="Compañia"> Compañia </br><span asp-validation-for="objCliente.Tipo"></span>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-primary">Agregar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+    CLIENTES:
+
+<div>
+    <table width="100%">
+        <thead><tr><th>Nombre</th><th>Pais</th><th>Tipo</th><th></th></tr></thead>
+        <tbody>
+            @if (Model.Lista != null)
+            {
+                foreach (var obj in Model.Lista)
+                {
+                    <tr id="Fila_@obj.IdCliente">
+                        <td>
+                            @obj.Nombre
+                        </td>
+                        <td>
+                            @obj.Pais
+                        </td>
+                        <td>
+                            @obj.Tipo
+                        </td>
+                        <td>
+                            <button data-idcliente="@obj.IdCliente" class="btnEliminar">Eliminar</button>
+                        </td>
+                    </tr>
+                }
+
+            }
+        </tbody>
+    </table>
+
+</div>
+
+
+
+
+@section Scripts{
+
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+    <script>
+        $(function () {
+            $(".btnEliminar").on("click", function () {
+                var idcliente = $(this).data("idcliente");
+                EliminarCliente(idcliente);
+            })
+        })
+
+        function EliminarCliente(IdCliente) {
+            var url = '/Cliente/ClienteMantenedor?handler=Eliminar';
+
+            $.get(url, {
+                idcliente: IdCliente
+            }).done(function (data) {
+
+                $("#Fila_" + IdCliente).remove();
+            });
+
+        }
+
+    </script>
+}

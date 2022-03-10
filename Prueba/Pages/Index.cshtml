@@ -1,0 +1,119 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+
+}
+
+<div style="display:flex;">
+    <i class="bi bi-folder" style="padding-right:5px;"></i> Company Application
+</div>
+<hr/>
+<div style="border-radius:5px; background:white; padding:10px;">
+
+    <div style="display:flex;"><i class="bi bi-info-circle-fill" style="padding-right:5px"></i>Añadir Cliente</div>
+    Porfavor, agregar una compañia a continuación:
+    </br><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="mdo"><i class="bi bi-patch-plus-fill" style="padding-right:2px;"></i>Añadir cliente</button>
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Agregar Cliente</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form method="post" asp-page-handler="Agregar">
+                    <div class="modal-body">
+
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">Nombre:</label>
+                            <input type="text" class="form-control" id="recipient-name" asp-for="objCliente.Nombre"><span asp-validation-for="objCliente.Nombre"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">Pais:</label>
+                            <select asp-for="objCliente.Pais" class="form-control input" asp-items="@Model.ListaPaises">
+                                <option selected></option>
+                            </select> <span asp-validation-for="objCliente.Pais"></span>
+                            @*<input type="text" class="form-control" id="recipient-name" asp-for="objCliente.Pais"><span asp-validation-for="objCliente.Pais"></span>*@
+                        </div>
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">Tipo:</label>
+                            <div style="display:flex;"><input type="radio" class="form-control" id="recipient-name" asp-for="objCliente.Tipo" value="Individuo"> Individuo</div>
+                            <div style="display:flex;"><input type="radio" class="form-control" id="recipient-name" asp-for="objCliente.Tipo" value="Compañia"> Compañia </br></div><span asp-validation-for="objCliente.Tipo"></span>
+                            </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-primary">Agregar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    </br>
+    </br>
+    Mis Compañias:
+
+    <div style="border: 1px solid silver; border-radius: 5px; border-width: 1px;">
+        <table width="100%" style="border-color:silver; border-radius:5px; border-width:1px; ">
+            <thead style="background: Gray; padding: 10px;"><tr style="padding:10px"><th>Nombre</th><th style="padding:10px">Pais</th><th style="padding:10px">Tipo</th><th></th></tr></thead>
+            <tbody>
+                @if (Model.Lista != null)
+                {
+                    foreach (var obj in Model.Lista)
+                    {
+                        <tr id="Fila_@obj.IdCliente">
+                            <td>
+                                <div style="padding:10px">@obj.Nombre</div>
+                            </td>
+                            <td>
+                                <div style="padding:10px">@obj.Pais</div>
+</td>
+                            <td>
+                                <div style="padding:10px">@obj.Tipo</div>
+</td>
+                            <td>
+                                <div style="padding:10px"><button data-idcliente="@obj.IdCliente" class="btnEliminar"><i class="bi bi-patch-minus"></i></button></div>
+</td>
+                        </tr>
+                    }
+
+                }
+            </tbody>
+        </table>
+
+    </div>
+
+</div>
+
+
+@section Scripts{
+
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+    <script>
+        $(function () {
+            $(".btnEliminar").on("click", function () {
+                var idcliente = $(this).data("idcliente");
+                EliminarCliente(idcliente);
+            })
+        })
+
+        function EliminarCliente(IdCliente) {
+            var url = '/Cliente/ClienteMantenedor?handler=Eliminar';
+
+            $.get(url, {
+                idcliente: IdCliente
+            }).done(function (data) {
+
+                $("#Fila_" + IdCliente).remove();
+            });
+
+        }
+
+    </script>
+}
