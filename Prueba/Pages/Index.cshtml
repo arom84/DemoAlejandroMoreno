@@ -26,7 +26,6 @@
                 </div>
                 <form method="post" asp-page-handler="Agregar">
                     <div class="modal-body">
-
                         <div class="form-group">
                             <label for="recipient-name" class="col-form-label">Nombre:</label>
                             <input type="text" class="form-control" id="recipient-name" asp-for="objCliente.Nombre"><span asp-validation-for="objCliente.Nombre"></span>
@@ -36,14 +35,12 @@
                             <select asp-for="objCliente.Pais" class="form-control input" asp-items="@Model.ListaPaises">
                                 <option selected></option>
                             </select> <span asp-validation-for="objCliente.Pais"></span>
-                            @*<input type="text" class="form-control" id="recipient-name" asp-for="objCliente.Pais"><span asp-validation-for="objCliente.Pais"></span>*@
                         </div>
                         <div class="form-group">
                             <label for="recipient-name" class="col-form-label">Tipo:</label>
-                            <div style="display:flex;"><input type="radio" class="form-control" id="recipient-name" asp-for="objCliente.Tipo" value="Individuo"> Individuo</div>
-                            <div style="display:flex;"><input type="radio" class="form-control" id="recipient-name" asp-for="objCliente.Tipo" value="Compañia"> Compañia </br></div><span asp-validation-for="objCliente.Tipo"></span>
+                            <div style="display:flex;"><input style="width: auto !important;" type="radio" class="form-control" id="recipient-name" asp-for="objCliente.Tipo" value="Individuo"><span style="padding-left: 5px; line-height: 30px;">Individuo</span></div>
+                            <div style="display:flex;"><input style="width: auto !important;" type="radio" class="form-control" id="recipient-name" asp-for="objCliente.Tipo" value="Compañia"><span style="padding-left: 5px; line-height: 30px;">Compañia</span></br></div><span asp-validation-for="objCliente.Tipo"></span>
                             </div>
-
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
@@ -59,7 +56,7 @@
 
     <div style="border: 1px solid silver; border-radius: 5px; border-width: 1px;">
         <table width="100%" style="border-color:silver; border-radius:5px; border-width:1px; ">
-            <thead style="background: Gray; padding: 10px;"><tr style="padding:10px"><th>Nombre</th><th style="padding:10px">Pais</th><th style="padding:10px">Tipo</th><th></th></tr></thead>
+            <thead style="background: Gray;"><tr><th style="padding:10px">Nombre</th><th style="padding:10px">Pais</th><th style="padding:10px">Tipo</th><th></th></tr></thead>
             <tbody>
                 @if (Model.Lista != null)
                 {
